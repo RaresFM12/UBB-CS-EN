@@ -1,3 +1,0 @@
-﻿  Stack.cpp
-E:\Rares\facultate\anul 1\sem2\dsa\interfaces\Stack\Stack.cpp(67,10): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  ADTStack.vcxproj -> E:\Rares\facultate\anul 1\sem2\dsa\assignements\ADTStack\x64\Debug\ADTStack.exe

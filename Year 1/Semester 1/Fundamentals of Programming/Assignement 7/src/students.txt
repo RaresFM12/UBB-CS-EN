@@ -1,0 +1,10 @@
+1 Rares 12
+3 Adela 65
+4 Denisa 5
+5 Ioana 45
+7 Tudor 12
+8 Trif 44
+9 Dana 33
+10 Rebeca 66
+11 Bolo 34
+12 Ovi 34

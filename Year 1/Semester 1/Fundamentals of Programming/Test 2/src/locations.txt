@@ -1,0 +1,19 @@
+1, Traian Dorz, 10, 12, 20
+2, Theodor Mihali, 15, 16, 30
+3, Mihail Kogalniceanu, 1, 40, 45
+4, Dorobantilor, 20, 50, 100
+5, Dorobantilor, 22, 54, 100
+6, Salciilor, 2, 2, 20
+7, Salciilor, 50, 46, 18
+8, Mihai Eminescu, 2, 90, 90
+9, Mihai Eminescu, 3, 90, 92
+10, Titulescu, 10, 10, 12
+11, Gabriel Voicu, 23, 34, 54
+12, Cuza Voda, 12, 12, 87
+13, Mihai Viteazu, 45, 77, 89
+14, Lucian Blaga, 24, 12, 13
+15, Lucian Blaga, 55, 4, 6
+16, George Enescu, 11, 66, 66
+17, Radu Gyr, 14, 4, 5
+18, Radu Gyr, 15, 5, 6
+20, Alin Oul, 45, 20, 23

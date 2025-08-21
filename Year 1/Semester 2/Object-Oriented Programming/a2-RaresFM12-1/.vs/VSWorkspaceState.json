@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.git",
+    "\\src",
+    "\\src\\domain",
+    "\\src\\repository",
+    "\\src\\service",
+    "\\src\\tests"
+  ],
+  "SelectedNode": "\\src\\domain\\vector.h",
+  "PreviewInSolutionExplorer": false
+}

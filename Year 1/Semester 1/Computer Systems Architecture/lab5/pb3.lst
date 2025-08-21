@@ -1,0 +1,48 @@
+     1                                  ; S1: 1, 2, 3, 4
+     2                                  ; S2: 5, 6, 7
+     3                                  ; D: 1, 2, 3, 4, 7, 6, 5
+     4                                  
+     5                                  bits 32 ;assembling for the 32 bits architecture
+     6                                  ; the start label will be the entry point in the program
+     7                                  global  start 
+     8                                  
+     9                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+    10                                  
+    11                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    12                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    13                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    14 00000000 01020304                	s1 db 1, 2, 3, 4 
+    15                                      l1 equ $-s1
+    16 00000004 050607                      s2 db 5, 6, 7
+    17                                      l2 equ $-s2
+    18 00000007 00<rept>                    d times (l1 + l2) db 0 
+    19                                      
+    20                                  segment  code use32 class=code ; code segment
+    21                                  start: 
+    22 00000000 B904000000                  mov ecx, l1
+    23 00000005 BE00000000                  mov esi, 0
+    24                                      
+    25 0000000A E30F                        jecxz Sfarsit1
+    26                                      Repeta1:
+    27 0000000C 8A86[00000000]                  mov al, [s1 + esi]
+    28 00000012 8886[07000000]                  mov [d + esi], al
+    29 00000018 46                              inc esi
+    30 00000019 E2F1                        loop Repeta1
+    31                                      Sfarsit1:
+    32                                      
+    33 0000001B B903000000                  mov ecx, l2
+    34 00000020 BE02000000                  mov esi, l2 - 1
+    35 00000025 BB00000000                  mov ebx, 0
+    36                                      
+    37 0000002A E310                        jecxz Sfarsit2
+    38                                      Repeta2:
+    39 0000002C 8A86[04000000]                  mov al, [s2 + esi]
+    40 00000032 8883[0B000000]                  mov [d + l1 + ebx], al
+    41 00000038 43                              inc ebx
+    42 00000039 4E                              dec esi
+    43 0000003A E2F0                        loop Repeta2
+    44                                      Sfarsit2:
+    45                                      
+    46 0000003C 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    47 0000003E FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    48                                  ;the program

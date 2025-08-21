@@ -1,0 +1,33 @@
+     1                                  ; (a-b-c)+(a-c-d-d)
+     2                                  ; (600-200-100)+(600-100-300-300)=300-100=200
+     3                                  
+     4                                  bits 32 ;assembling for the 32 bits architecture
+     5                                  ; the start label will be the entry point in the program
+     6                                  global  start 
+     7                                  
+     8                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+     9                                  
+    10                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    11                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    12                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    13 00000000 5802                    	a dw 600
+    14 00000002 C800                        b dw 200
+    15 00000004 6400                        c dw 100
+    16 00000006 2C01                        d dw 300
+    17                                      
+    18                                  segment  code use32 class=code ; code segment
+    19                                  start: 
+    20 00000000 66A1[00000000]          	mov ax, [a] ; ax = a
+    21 00000006 662B05[02000000]            sub ax, [b] ; ax = ax - b
+    22 0000000D 662B05[04000000]            sub ax, [c] ; ax = ax - c
+    23                                      
+    24 00000014 668B1D[00000000]            mov bx, [a] ; bx = a
+    25 0000001B 662B1D[04000000]            sub bx, [c] ; bx = bx - c
+    26 00000022 662B1D[06000000]            sub bx, [d] ; bx = bx - d
+    27 00000029 662B1D[06000000]            sub bx, [d] ; bx = bx - d
+    28                                      
+    29 00000030 6601D8                      add ax, bx ; ax = ax + bx
+    30                                         
+    31 00000033 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    32 00000035 FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    33                                  ;the program

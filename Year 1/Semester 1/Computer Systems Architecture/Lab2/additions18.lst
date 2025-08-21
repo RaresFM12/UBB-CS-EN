@@ -1,0 +1,28 @@
+     1                                  ; d-(a+b)+c
+     2                                  ; 7-(5+2)+1=7-7+1=1
+     3                                  
+     4                                  bits 32 ;assembling for the 32 bits architecture
+     5                                  ; the start label will be the entry point in the program
+     6                                  global  start 
+     7                                  
+     8                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+     9                                  
+    10                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    11                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    12                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    13 00000000 05                      	a db 5
+    14 00000001 02                          b db 2
+    15 00000002 01                          c db 1
+    16 00000003 07                          d db 7
+    17                                      
+    18                                  segment  code use32 class=code ; code segment
+    19                                  start: 
+    20 00000000 A0[03000000]            	mov al, [d] ; al = d
+    21 00000005 8A25[00000000]              mov ah, [a] ; ah = a
+    22 0000000B 0225[01000000]              add ah, [b] ; ah = ah + b
+    23 00000011 28E0                        sub al, ah ; al = al - ah
+    24 00000013 0205[02000000]              add al, [c] ; al = al + c
+    25                                  	
+    26 00000019 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    27 0000001B FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    28                                  ;the program

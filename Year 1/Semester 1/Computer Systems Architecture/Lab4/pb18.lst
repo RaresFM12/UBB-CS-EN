@@ -1,0 +1,55 @@
+     1                                  ; 18) Given the word A, compute the doubleword B as follows:
+     2                                  ; - the bits 0-3 of B have the value 0;
+     3                                  ; - the bits 4-7 of B are the same as the bits 8-11 of A
+     4                                  ; - the bits 8-9 and 10-11 of B are the invert of the bits 0-1 of A (so 2 times) ;
+     5                                  ; - the bits 12-15 of B have the value 1
+     6                                  ; - the bits 16-31 of B are the same as the bits 0-15 of B.
+     7                                  
+     8                                  bits 32 ;assembling for the 32 bits architecture
+     9                                  ; the start label will be the entry point in the program
+    10                                  global  start 
+    11                                  
+    12                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+    13                                  
+    14                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    15                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    16                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    17 00000000 2ECA                    	a dw 1100101000101110b
+    18 00000002 00000000                    b dd 0
+    19                                      
+    20                                  segment  code use32 class=code ; code segment
+    21                                  start:     
+    22                                      ; the bits 0-3 of B have the value 0;
+    23 00000000 BB00000000                  mov ebx, 0 ; we compute the result in bx
+    24                                      
+    25                                      ; the bits 4-7 of B are the same as the bits 8-11 of A
+    26 00000005 66A1[00000000]              mov ax, [a]
+    27 0000000B 6625000F                    and ax, 0000111100000000b
+    28 0000000F B104                        mov cl, 4
+    29 00000011 66D3C8                      ror ax, cl
+    30 00000014 6609C3                      or bx, ax
+    31                                      
+    32                                      ; the bits 8-9 and 10-11 of B are the invert of the bits 0-1 of A (so 2 times) ;
+    33 00000017 66A1[00000000]              mov ax, [a]
+    34 0000001D 66F7D0                      not ax
+    35 00000020 6683E003                    and ax, 0000000000000011b
+    36 00000024 B108                        mov cl, 8
+    37 00000026 66D3C0                      rol ax, cl
+    38 00000029 6609C3                      or bx, ax
+    39 0000002C B102                        mov cl, 2
+    40 0000002E 66D3C0                      rol ax, cl
+    41 00000031 6609C3                      or bx, ax
+    42                                      
+    43                                      ; the bits 12-15 of B have the value 1
+    44 00000034 6681CB00F0                  or bx, 1111000000000000b
+    45                                      
+    46                                      ; the bits 16-31 of B are the same as the bits 0-15 of B.
+    47 00000039 BA00000000                  mov edx, 0
+    48 0000003E 6689DA                      mov dx, bx
+    49 00000041 B110                        mov cl, 16
+    50 00000043 D3C3                        rol ebx, cl
+    51 00000045 09D3                        or ebx, edx
+    52                                      
+    53 00000047 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    54 00000049 FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    55                                  ;the program

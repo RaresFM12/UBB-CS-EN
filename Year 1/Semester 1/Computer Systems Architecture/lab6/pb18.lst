@@ -1,0 +1,85 @@
+     1                                  ; 12AB5678h, 1256ABCDh, 12344344h 
+     2                                  ; 12345678h, 1256ABCDh, 12AB4344h.
+     3                                  
+     4                                  bits 32 ;assembling for the 32 bits architecture
+     5                                  ; the start label will be the entry point in the program
+     6                                  global  start 
+     7                                  
+     8                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+     9                                  
+    10                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    11                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    12                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    13 00000000 7856AB12CDAB561244-     	sir dd 12AB5678h, 1256ABCDh, 12344344h 
+    13 00000009 433412             
+    14                                      len equ ($-sir) / 4
+    15 0000000C 0000<rept>                  hw times len dw 0
+    16                                      
+    17                                  segment  code use32 class=code ; code segment
+    18                                  start: 
+    19 00000000 BE[00000000]                mov esi, sir
+    20 00000005 B903000000                  mov ecx, len
+    21 0000000A BB00000000                  mov ebx, 0
+    22 0000000F FC                          cld
+    23                                      
+    24 00000010 E310                        jecxz sf
+    25                                          Repeta:
+    26 00000012 AD                                  lodsd
+    27 00000013 C1C810                              ror eax, 16
+    28                                              
+    29 00000016 668983[0C000000]                    mov [hw + ebx], ax
+    30 0000001D 83C302                              add ebx, 2
+    31                                              
+    32 00000020 E2F0                            loop Repeta
+    33                                      sf:
+    34                                      
+    35 00000022 BB00000000                  mov ebx, 0
+    36                                      Repeta1:
+    37 00000027 83FB03                          cmp ebx, len
+    38 0000002A 7433                            jz fin_sir1
+    39                                          
+    40 0000002C 89D8                            mov eax, ebx
+    41 0000002E 40                              inc eax
+    42                                          
+    43                                          Repeta2:
+    44 0000002F 83F803                              cmp eax, len
+    45 00000032 7428                                jz fin_sir2
+    46                                              
+    47 00000034 668B941B[0C000000]                  mov dx, [hw + ebx * 2]
+    48 0000003C 668B8C00[0C000000]                  mov cx, [hw + eax * 2]
+    49 00000044 6639CA                              cmp dx, cx
+    50 00000047 7E10                                jle mic_egal
+    51 00000049 66898C1B[0C000000]                      mov [hw + ebx * 2], cx
+    52 00000051 66899400[0C000000]                      mov [hw + eax* 2], dx
+    53                                              mic_egal:
+    54                                          
+    55 00000059 40                                  inc eax
+    56 0000005A EBD3                                jmp Repeta2
+    57                                              
+    58                                          fin_sir2:
+    59 0000005C 43                              inc ebx
+    60 0000005D EBC8                            jmp Repeta1
+    61                                          
+    62                                      fin_sir1:
+    63                                      
+    64 0000005F BB00000000                  mov ebx, 0
+    65 00000064 BE[00000000]                mov esi, sir
+    66 00000069 B903000000                  mov ecx, len
+    67 0000006E FC                          cld
+    68                                      
+    69 0000006F E31D                        jecxz Sfarsit
+    70                                          Repeta3:
+    71 00000071 AD                                  lodsd
+    72 00000072 C1C810                              ror eax, 16
+    73 00000075 6683E000                            and ax, 0000h
+    74 00000079 660B841B[0C000000]                  or ax, [hw + ebx * 2]
+    75 00000081 C1C810                              ror eax, 16
+    76                                              
+    77 00000084 89049D[00000000]                    mov [sir + ebx * 4], eax
+    78 0000008B 43                                  inc ebx
+    79 0000008C E2E3                            loop Repeta3
+    80                                      Sfarsit:
+    81                                      
+    82 0000008E 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    83 00000090 FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    84                                  ;the program

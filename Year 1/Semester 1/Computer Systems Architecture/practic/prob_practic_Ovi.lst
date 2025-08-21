@@ -1,0 +1,85 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit, fopen, fread, fclose, printf, fprintf, scanf
+     5                                  import exit msvcrt.dll
+     6                                  import fopen msvcrt.dll
+     7                                  import fread msvcrt.dll
+     8                                  import fclose msvcrt.dll
+     9                                  import printf msvcrt.dll
+    10                                  import fprintf msvcrt.dll
+    11                                  import scanf msvcrt.dll
+    12                                  
+    13                                  segment data use32 class=data
+    14 00000000 FFFFFFFF                    file_descriptor dd -1
+    15 00000004 257300                      format db "%s", 0
+    16                                      
+    17 00000007 <res 00000032>              cifre resb 50
+    18 00000039 313335373900                impare db "13579", 0
+    19 0000003F <res 00000032>              nr resb 50
+    20 00000071 6F76692E74787400            output db "ovi.txt", 0
+    21 00000079 7700                        access_mode db "w", 0
+    22                                      
+    23                                  segment code use32 class=code
+    24                                  start:
+    25 00000000 68[07000000]                push dword cifre
+    26 00000005 68[04000000]                push dword format
+    27 0000000A FF15[00000000]              call [scanf]
+    28 00000010 83C408                      add esp, 4 * 2
+    29                                      
+    30 00000013 68[79000000]                push dword access_mode   
+    31 00000018 68[71000000]                push dword output
+    32 0000001D FF15[00000000]              call [fopen]
+    33 00000023 83C408                      add esp, 4*2
+    34                                      
+    35 00000026 A3[00000000]                mov [file_descriptor], eax
+    36 0000002B 83F800                      cmp eax, 0
+    37 0000002E 745E                        je gata
+    38                                      
+    39 00000030 BE00000000                  mov esi, 0 ; merge prin impare
+    40 00000035 BF00000000                  mov edi, 0 ; merge prin cifre
+    41 0000003A BB00000000                  mov ebx, 0 ; cnt nr
+    42                                      
+    43                                      Repeta1:
+    44 0000003F 8A96[39000000]                  mov dl, [impare + esi]
+    45                                          
+    46                                          Repeta2:
+    47 00000045 8A8F[07000000]                      mov cl, [cifre + edi]
+    48                                              
+    49 0000004B 80F900                              cmp cl, 0
+    50 0000004E 740E                                je aici
+    51                                              
+    52 00000050 38D1                                cmp cl, dl
+    53 00000052 7507                                jne nu_imp
+    54 00000054 888B[3F000000]                          mov [nr + ebx], cl
+    55 0000005A 43                                      inc ebx
+    56                                                  
+    57                                              nu_imp:
+    58                                              
+    59 0000005B 47                                  inc edi
+    60 0000005C EBE7                                jmp Repeta2
+    61                                          
+    62                                          aici:
+    63 0000005E 46                              inc esi
+    64 0000005F BF00000000                      mov edi, 0
+    65                                          
+    66 00000064 83FE05                          cmp esi, 5
+    67 00000067 7402                            je final
+    68 00000069 EBD4                                jmp Repeta1
+    69                                         
+    70                                      final:
+    71                                      
+    72 0000006B 68[3F000000]                push dword nr
+    73 00000070 FF35[00000000]              push dword [file_descriptor]
+    74 00000076 FF15[00000000]              call [fprintf]
+    75 0000007C 83C408                      add esp, 4*2
+    76                                              
+    77 0000007F FF35[00000000]              push dword [file_descriptor]
+    78 00000085 FF15[00000000]              call [fclose]
+    79 0000008B 83C404                      add esp, 4
+    80                                      
+    81                                      gata:
+    82                                      
+    83 0000008E 6A00                        push dword 0
+    84 00000090 FF15[00000000]              call [exit]
+    85                                      

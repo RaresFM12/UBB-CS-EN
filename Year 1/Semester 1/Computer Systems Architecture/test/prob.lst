@@ -1,0 +1,133 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit, fopen, fclose, printf, fprintf, scanf
+     5                                  import exit msvcrt.dll
+     6                                  import fopen msvcrt.dll
+     7                                  import fclose msvcrt.dll
+     8                                  import printf msvcrt.dll
+     9                                  import fprintf msvcrt.dll
+    10                                  import scanf msvcrt.dll
+    11                                  
+    12                                  segment data use32 class=data
+    13 00000000 FFFFFFFF                    file_descriptor dd -1
+    14 00000004 257300                      format db "%s", 0
+    15                                      
+    16 00000007 <res 00000069>              text resb 105
+    17 00000070 <res 00000069>              mesaj resb 105
+    18 000000D9 6D6573616A2E747874-         output db "mesaj.txt", 0
+    18 000000E2 00                 
+    19 000000E3 7700                        access_mode db "w", 0
+    20                                      
+    21                                  segment code use32 class=code
+    22                                  start:
+    23 00000000 68[07000000]                push dword text
+    24 00000005 68[04000000]                push dword format
+    25 0000000A FF15[00000000]              call [scanf]
+    26 00000010 83C408                      add esp, 4 * 2
+    27                                      
+    28 00000013 BE00000000                  mov esi, 0
+    29                                      Repeta:
+    30 00000018 8A96[07000000]                  mov dl, [text + esi]
+    31                                          
+    32 0000001E 80FA00                          cmp dl, 0
+    33 00000021 744B                            je afara
+    34                                          
+    35 00000023 80FA30                          cmp dl, '0'
+    36 00000026 7211                            jb mai_mic3
+    37 00000028 80FA39                              cmp dl, '9'
+    38 0000002B 770C                                ja mai_mare3
+    39 0000002D B330                                    mov bl, '0'
+    40 0000002F 88D1                                    mov cl, dl
+    41 00000031 28D9                                    sub cl, bl
+    42 00000033 888E[07000000]                          mov [text + esi], cl
+    43                                                  
+    44                                              mai_mare3:
+    45                                              
+    46                                          mai_mic3:
+    47                                          
+    48 00000039 80FA41                          cmp dl, 'A'
+    49 0000003C 7214                            jb mai_mic1
+    50 0000003E 80FA46                              cmp dl, 'F'
+    51 00000041 770F                                ja mai_mare1
+    52 00000043 B341                                    mov bl, 'A'
+    53 00000045 88D1                                    mov cl, dl
+    54 00000047 28D9                                    sub cl, bl
+    55 00000049 80C10A                                  add cl, 10
+    56 0000004C 888E[07000000]                          mov [text + esi], cl
+    57                                                  
+    58                                              mai_mare1:
+    59                                              
+    60                                          mai_mic1:
+    61                                              
+    62 00000052 80FA61                          cmp dl, 'a'
+    63 00000055 7214                            jb mai_mic2
+    64 00000057 80FA66                              cmp dl, 'f'
+    65 0000005A 770F                                ja mai_mare2
+    66 0000005C B361                                    mov bl, 'a'
+    67 0000005E 88D1                                    mov cl, dl
+    68 00000060 28D9                                    sub cl, bl
+    69 00000062 80C10A                                  add cl, 10
+    70 00000065 888E[07000000]                          mov [text + esi], cl
+    71                                                  
+    72                                              mai_mare2:
+    73                                              
+    74                                          mai_mic2:
+    75                                          
+    76 0000006B 46                              inc esi
+    77 0000006C EBAA                            jmp Repeta
+    78                                          
+    79                                      afara:
+    80                                      
+    81 0000006E BF00000000                  mov edi, 0
+    82 00000073 BE00000000                  mov esi, 0
+    83                                      Repeta2:
+    84 00000078 8A96[07000000]                  mov dl, [text + esi]
+    85                                          
+    86 0000007E 80FA00                          cmp dl, 0
+    87 00000081 7423                            je afara2
+    88                                              
+    89 00000083 88D0                            mov al, dl
+    90 00000085 B310                            mov bl, 16
+    91 00000087 F6E3                            mul bl
+    92                                              
+    93 00000089 46                              inc esi
+    94 0000008A 80FA00                          cmp dl, 0
+    95 0000008D 7417                            je afara2
+    96                                          
+    97 0000008F 8A96[07000000]                  mov dl, [text + esi]
+    98 00000095 B600                            mov dh, 0
+    99 00000097 6601D0                          add ax, dx
+   100                                          
+   101 0000009A 88C1                            mov cl, al
+   102 0000009C 888F[70000000]                  mov [mesaj + edi], cl
+   103 000000A2 47                              inc edi
+   104                                          
+   105 000000A3 46                              inc esi
+   106 000000A4 EBD2                            jmp Repeta2
+   107                                          
+   108                                      afara2:
+   109                                      
+   110 000000A6 68[E3000000]                push dword access_mode   
+   111 000000AB 68[D9000000]                push dword output
+   112 000000B0 FF15[00000000]              call [fopen]
+   113 000000B6 83C408                      add esp, 4*2
+   114                                      
+   115 000000B9 A3[00000000]                mov [file_descriptor], eax
+   116 000000BE 83F800                      cmp eax, 0
+   117 000000C1 7423                        je gata
+   118                                      
+   119 000000C3 68[70000000]                push dword mesaj
+   120 000000C8 FF35[00000000]              push dword [file_descriptor]
+   121 000000CE FF15[00000000]              call [fprintf]
+   122 000000D4 83C408                      add esp, 4*2
+   123                                      
+   124 000000D7 FF35[00000000]              push dword [file_descriptor]
+   125 000000DD FF15[00000000]              call [fclose]
+   126 000000E3 83C404                      add esp, 4
+   127                                      
+   128                                      gata:
+   129                                      
+   130 000000E6 6A00                        push dword 0
+   131 000000E8 FF15[00000000]              call [exit]
+   132                                      

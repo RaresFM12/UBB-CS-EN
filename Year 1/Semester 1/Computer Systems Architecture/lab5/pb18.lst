@@ -1,0 +1,65 @@
+     1                                  ; A: 2, 1, 3, -3
+     2                                  ; B: 4, 5, -5, 7
+     3                                  ; R: 1, 3, 5, 7
+     4                                  
+     5                                  bits 32 ;assembling for the 32 bits architecture
+     6                                  ; the start label will be the entry point in the program
+     7                                  global  start 
+     8                                  
+     9                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+    10                                  
+    11                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    12                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    13                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    14 00000000 020103FD                	a db 2, 1, 3, -3
+    15                                      l1 equ $-a
+    16 00000004 0405FB07                    b db 4, 5, -5, 7
+    17                                      l2 equ $-b
+    18 00000008 00<rept>                    d times (l1 + l2) db 0 
+    19                                      
+    20                                  segment  code use32 class=code ; code segment
+    21                                  start: 
+    22 00000000 B904000000                  mov ecx, l1
+    23 00000005 BE00000000                  mov esi, 0
+    24 0000000A BB00000000                  mov ebx, 0
+    25                                      
+    26 0000000F E318                        jecxz Sfarsit1
+    27                                      Repeta1:
+    28 00000011 8A86[00000000]                  mov al, [a + esi]
+    29                                          
+    30 00000017 3C00                            cmp al, 0    
+    31 00000019 7E0B                            jle neg1
+    32 0000001B A801                                test al, 1
+    33 0000001D 7407                                jz even1
+    34 0000001F 8883[08000000]                          mov [d + ebx], al
+    35 00000025 43                                      inc ebx
+    36                                              even1:
+    37                                          neg1:
+    38                                          
+    39 00000026 46                              inc esi
+    40 00000027 E2E8                        loop Repeta1
+    41                                      Sfarsit1:
+    42                                      
+    43 00000029 B904000000                  mov ecx, l2
+    44 0000002E BE00000000                  mov esi, 0
+    45                                      
+    46 00000033 E318                        jecxz Sfarsit2
+    47                                      Repeta2:
+    48 00000035 8A86[04000000]                  mov al, [b + esi]
+    49                                          
+    50 0000003B 3C00                            cmp al, 0
+    51 0000003D 7E0B                            jle neg2
+    52 0000003F A801                                test al, 1
+    53 00000041 7407                                jz even2
+    54 00000043 8883[08000000]                          mov [d + ebx], al
+    55 00000049 43                                      inc ebx
+    56                                              even2:
+    57                                          neg2:
+    58                                          
+    59 0000004A 46                              inc esi
+    60 0000004B E2E8                        loop Repeta2
+    61                                      Sfarsit2:
+    62                                      
+    63 0000004D 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    64 0000004F FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    65                                  ;the program

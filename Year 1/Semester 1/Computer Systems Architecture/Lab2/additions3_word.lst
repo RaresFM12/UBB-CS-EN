@@ -1,0 +1,31 @@
+     1                                  ; (b+b+d)-(c+a)
+     2                                  ; (300+300+500)-(400+200)=1100-600=500
+     3                                  
+     4                                  bits 32 ;assembling for the 32 bits architecture
+     5                                  ; the start label will be the entry point in the program
+     6                                  global  start 
+     7                                  
+     8                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+     9                                  
+    10                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    11                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    12                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    13 00000000 C800                    	a dw 200
+    14 00000002 2C01                        b dw 300
+    15 00000004 9001                        c dw 400
+    16 00000006 F401                        d dw 500
+    17                                      
+    18                                  segment  code use32 class=code ; code segment
+    19                                  start: 
+    20 00000000 66A1[02000000]          	mov ax, [b] ; ax = b
+    21 00000006 660305[02000000]            add ax, [b] ; ax = ax + b
+    22 0000000D 660305[06000000]            add ax, [d] ; ax = ax + d
+    23                                      
+    24 00000014 668B1D[04000000]            mov bx, [c] ; bx = c
+    25 0000001B 66031D[00000000]            add bx, [a] ; bx = bx + a
+    26                                      
+    27 00000022 6629D8                      sub ax, bx ; ax = ax - bx
+    28                                         
+    29 00000025 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    30 00000027 FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    31                                  ;the program

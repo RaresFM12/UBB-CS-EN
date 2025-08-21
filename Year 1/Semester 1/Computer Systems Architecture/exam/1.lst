@@ -1,0 +1,25 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit
+     5                                  import exit msvcrt.dll
+     6                                  
+     7                                  extern fopen, fprintf, fclose
+     8                                  import fprintf msvcrt.dll
+     9                                  import fopen msvcrt.dll
+    10                                  import fclose msvcrt.dll
+    11                                  
+    12                                  segment data use32 class=data
+    13 00000000 0B0203                      n db 11, 2, 3 
+    14 00000003 0C2B2016                    c db 12, 43, 32, 22
+    15                                      
+    16                                  segment code use32 class=code
+    17                                  start:
+    18 00000000 B6C8                        mov dh, 200
+    19 00000002 B562                        mov ch, 62h
+    20 00000004 28EE                        sub dh, ch
+    21                                      
+    22 00000006 6A00                        push dword 0
+    23 00000008 FF15[00000000]              call [exit]
+    24                                      
+    25                                  

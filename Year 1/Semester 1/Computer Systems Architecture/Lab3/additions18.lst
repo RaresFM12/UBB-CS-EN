@@ -1,0 +1,64 @@
+     1                                  ; (d+d)-a-b-c
+     2                                  ; (180 +180) - 4 - 200 - 80 = 360 - 4 - 200 - 80 = 76
+     3                                  
+     4                                  bits 32 ;assembling for the 32 bits architecture
+     5                                  ; the start label will be the entry point in the program
+     6                                  global  start 
+     7                                  
+     8                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+     9                                  
+    10                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    11                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    12                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    13 00000000 04                      	a db 4
+    14 00000001 C800                        b dw 200
+    15 00000003 50000000                    c dd 80
+    16 00000007 B400000000000000            d dq 180
+    17                                      
+    18                                  segment  code use32 class=code ; code segment
+    19                                  start: 
+    20 00000000 A1[07000000]            	mov eax, dword [d] 
+    21 00000005 8B15[0B000000]              mov edx, dword [d+4] ; edx:eax = d
+    22                                      
+    23 0000000B 8B1D[07000000]              mov ebx, dword [d]
+    24 00000011 8B0D[0B000000]              mov ecx, dword [d+4] ; ecx:ebx = d
+    25                                      
+    26 00000017 F8                          clc
+    27 00000018 01D8                        add eax, ebx
+    28 0000001A 11CA                        adc edx, ecx ; edx:eax = d + d
+    29                                      
+    30 0000001C 8A1D[00000000]              mov bl, [a]
+    31 00000022 B700                        mov bh, 0 ; transformam a in dw
+    32 00000024 66B90000                    mov cx, 0 ; transformam a in dd
+    33                                      
+    34 00000028 6651                        push cx
+    35 0000002A 6653                        push bx
+    36 0000002C 5B                          pop ebx
+    37 0000002D B900000000                  mov ecx, 0 ; transformam a in dq
+    38                                      
+    39 00000032 F8                          clc
+    40 00000033 29D8                        sub eax, ebx
+    41 00000035 19CA                        sbb edx, ecx ; (d+d)-a
+    42                                      
+    43 00000037 668B1D[01000000]            mov bx, [b]
+    44 0000003E 66B90000                    mov cx, 0 ; b -> dd
+    45                                      
+    46 00000042 6651                        push cx
+    47 00000044 6653                        push bx
+    48 00000046 5B                          pop ebx
+    49 00000047 B900000000                  mov ecx, 0 ; b -> dq
+    50                                      
+    51 0000004C F8                          clc
+    52 0000004D 29D8                        sub eax, ebx
+    53 0000004F 19CA                        sbb edx, ecx ; (d+d)-a-b
+    54                                      
+    55 00000051 8B1D[03000000]              mov ebx, [c]
+    56 00000057 B900000000                  mov ecx, 0 ; c -> dq
+    57                                      
+    58 0000005C F8                          clc
+    59 0000005D 29D8                        sub eax, ebx
+    60 0000005F 19CA                        sbb edx, ecx ; (d+d)-a-b-c
+    61                                         
+    62 00000061 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    63 00000063 FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    64                                  ;the program

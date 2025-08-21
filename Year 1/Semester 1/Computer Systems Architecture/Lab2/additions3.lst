@@ -1,0 +1,30 @@
+     1                                  ; (c+d)-(a+d)+b
+     2                                  ; (5+7)-(3+7)+4=12-10+4=6
+     3                                  
+     4                                  bits 32 ;assembling for the 32 bits architecture
+     5                                  ; the start label will be the entry point in the program
+     6                                  global  start 
+     7                                  
+     8                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+     9                                  
+    10                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    11                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    12                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    13 00000000 03                      	a db 3
+    14 00000001 04                          b db 4
+    15 00000002 05                          c db 5
+    16 00000003 07                          d db 7
+    17                                      
+    18                                  segment  code use32 class=code ; code segment
+    19                                  start: 
+    20 00000000 A0[02000000]            	mov al, [c] ; ax = c
+    21 00000005 0205[03000000]              add al, [d] ; ax = ax + d
+    22 0000000B 8A25[00000000]              mov ah, [a] ; ah = a
+    23 00000011 0225[03000000]              add ah, [d] ; ah = ah + d
+    24                                      
+    25 00000017 28E0                        sub al, ah ; al = al - ah
+    26 00000019 0205[01000000]              add al, [b] ; al = al + b
+    27                                  	
+    28 0000001F 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    29 00000021 FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    30                                  ;the program

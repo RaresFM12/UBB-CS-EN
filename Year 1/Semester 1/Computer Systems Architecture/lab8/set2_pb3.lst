@@ -1,0 +1,104 @@
+     1                                  ; The following code will open a file called "ana.txt" from current folder,
+     2                                  ; it will read maximum 100 characters from this file,
+     3                                  ; and it will display to the console the number of chars and the text we've read.
+     4                                  
+     5                                  ; The program will use:
+     6                                  ; - the function fopen() to open/create the file
+     7                                  ; - the function fread() to read from file
+     8                                  ; - the function printf() to display a text
+     9                                  ; - the function fclose() to close the created file.
+    10                                  
+    11                                  ; Because the fopen() call uses the file access mode "r", the file will be open for
+    12                                  ; reading. The file must exist, otherwise the fopen() call will fail.
+    13                                  ; For details about the file access modes see the section "Theory".
+    14                                  
+    15                                  ; Any string used by printf() must be null-terminated ('\0').
+    16                                  
+    17                                  bits 32
+    18                                  
+    19                                  global start
+    20                                  
+    21                                  ; declare external functions needed by our program
+    22                                  extern exit, fopen, fread, fclose, printf
+    23                                  import exit msvcrt.dll
+    24                                  import fopen msvcrt.dll
+    25                                  import fread msvcrt.dll
+    26                                  import fclose msvcrt.dll
+    27                                  import printf msvcrt.dll
+    28                                  
+    29                                  ; our data is declared here (the variables needed by our program)
+    30                                  segment data use32 class=data
+    31 00000000 616E612E74787400            file_name db "ana.txt", 0   ; filename to be read
+    32 00000008 7200                        access_mode db "r", 0       ; file access mode:
+    33                                                                  ; r - opens a file for reading. The file must exist.
+    34 0000000A FFFFFFFF                    file_descriptor dd -1       ; variable to hold the file descriptor
+    35                                      len equ 100                 ; maximum number of characters to read
+    36 0000000E 00<rept>                    text times (len+1) db 0     ; string to hold the text which is read from file
+    37 00000073 2564206576656E2064-         format db "%d even digits", 0
+    37 0000007C 696769747300       
+    38                                  
+    39                                  ; our code starts here
+    40                                  segment code use32 class=code
+    41                                      start:
+    42                                          ; call fopen() to create the file
+    43                                          ; fopen() will return a file descriptor in the EAX or 0 in case of error
+    44                                          ; eax = fopen(file_name, access_mode)
+    45 00000000 68[08000000]                    push dword access_mode     
+    46 00000005 68[00000000]                    push dword file_name
+    47 0000000A FF15[00000000]                  call [fopen]
+    48 00000010 83C408                          add esp, 4*2                ; clean-up the stack
+    49                                  
+    50 00000013 A3[0A000000]                    mov [file_descriptor], eax  ; store the file descriptor returned by fopen
+    51                                  
+    52                                          ; check if fopen() has successfully created the file (EAX != 0)
+    53 00000018 83F800                          cmp eax, 0
+    54 0000001B 7461                            je final
+    55                                  
+    56 0000001D FF35[0A000000]                  push dword [file_descriptor]
+    57 00000023 6A64                            push dword len
+    58 00000025 6A01                            push dword 1
+    59 00000027 68[0E000000]                    push dword text        
+    60 0000002C FF15[00000000]                  call [fread]
+    61 00000032 83C410                          add esp, 4*4
+    62                                  
+    63 00000035 BB00000000                      mov ebx, 0
+    64 0000003A 89C1                            mov ecx, eax
+    65 0000003C BE00000000                      mov esi, 0
+    66                                          
+    67 00000041 E31D                            jecxz sari1
+    68 00000043 B800000000                          mov eax, 0
+    69                                              Repeta:
+    70 00000048 8A86[0E000000]                          mov al, [text + esi]
+    71 0000004E 3C30                                    cmp al, '0'
+    72 00000050 7C0B                                    jl not_nr1
+    73 00000052 3C39                                        cmp al, '9'
+    74 00000054 7F07                                        jg not_nr2
+    75 00000056 2C30                                            sub al, '0'
+    76 00000058 A801                                            test al, 1
+    77 0000005A 7501                                            jnz odd
+    78 0000005C 43                                                  inc ebx
+    79                                                              
+    80                                                          odd:
+    81                                                      
+    82                                                      not_nr2:
+    83                                                  not_nr1:
+    84                                                  
+    85 0000005D 46                                      inc esi
+    86 0000005E E2E8                                loop Repeta
+    87                                          
+    88                                          sari1:
+    89                                          
+    90 00000060 53                              push dword ebx
+    91 00000061 68[73000000]                    push dword format
+    92 00000066 FF15[00000000]                  call [printf]
+    93 0000006C 83C408                          add esp, 4 * 2
+    94                                          
+    95 0000006F FF35[0A000000]                  push dword [file_descriptor]
+    96 00000075 FF15[00000000]                  call [fclose]
+    97 0000007B 83C404                          add esp, 4
+    98                                  
+    99                                        final:
+   100                                  
+   101                                          ; exit(0)
+   102 0000007E 6A00                            push dword 0
+   103 00000080 FF15[00000000]                  call [exit]

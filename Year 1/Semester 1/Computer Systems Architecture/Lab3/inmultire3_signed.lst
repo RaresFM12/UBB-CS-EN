@@ -1,0 +1,66 @@
+     1                                  ; (8-a*b*100+c)/d+x; a,b,d-byte; c-doubleword; x-qword
+     2                                  ; (8-2*-3*100+10)/(-2)+12 = (8+600+10)/(-2)+12=618/(-2)+12=-309+12=-297
+     3                                  
+     4                                  bits 32 ;assembling for the 32 bits architecture
+     5                                  ; the start label will be the entry point in the program
+     6                                  global  start 
+     7                                  
+     8                                  extern  exit ; we inform the assembler that the exit symbol is foreign, i.e. it exists even if we won't be defining it
+     9                                  
+    10                                  import  exit msvcrt.dll; exit is a function that ends the process, it is defined in msvcrt.dll
+    11                                          ; msvcrt.dll contains exit, printf and all the other important C-runtime functions
+    12                                  segment  data use32 class=data ; the data segment where the variables are declared 
+    13 00000000 02                      	a db 2
+    14 00000001 FD                          b db -3
+    15 00000002 0A000000                    c dd 10
+    16 00000006 FE                          d db -2
+    17 00000007 0C00000000000000            x dq 12
+    18                                      
+    19                                  segment  code use32 class=code ; code segment
+    20                                  start: 
+    21 00000000 A0[00000000]                mov al, [a]
+    22 00000005 F62D[01000000]              imul byte [b]
+    23 0000000B B364                        mov bl, 100
+    24 0000000D F6EB                        imul bl ; ax = a*b*100
+    25 0000000F 6699                        cwd ; dx:ax = a*b*100
+    26                                      
+    27 00000011 66BB0800                    mov bx, 8
+    28 00000015 66B90000                    mov cx, 0
+    29                                      
+    30 00000019 F8                          clc
+    31 0000001A 6629C3                      sub bx, ax
+    32 0000001D 6619D1                      sbb cx, dx
+    33                                      
+    34 00000020 66A1[02000000]              mov ax, word [c]
+    35 00000026 668B15[04000000]            mov dx, word [c+2]
+    36                                      
+    37 0000002D F8                          clc
+    38 0000002E 6601D8                      add ax, bx
+    39 00000031 6611CA                      adc dx, cx ; (8-a*b*100+c)
+    40                                      
+    41 00000034 6689C3                      mov bx, ax
+    42 00000037 6689D1                      mov cx, dx
+    43                                      
+    44 0000003A A0[06000000]                mov al, [d]
+    45 0000003F 6698                        cbw
+    46                                      
+    47 00000041 6689C2                      mov dx, ax
+    48 00000044 6689D8                      mov ax, bx
+    49 00000047 6689D3                      mov bx, dx
+    50 0000004A 6689CA                      mov dx, cx
+    51                                      
+    52 0000004D 66F7FB                      idiv bx ; (8-a*b*100+c)/d
+    53                                  
+    54 00000050 98                          cwde
+    55 00000051 99                          cdq
+    56                                      
+    57 00000052 8B1D[07000000]              mov ebx, dword [x]
+    58 00000058 8B0D[0B000000]              mov ecx, dword [x+4]
+    59                                      
+    60 0000005E F8                          clc
+    61 0000005F 01D8                        add eax, ebx
+    62 00000061 11CA                        adc edx, ecx     ; (8-a*b*100+c)/d+x
+    63                                      
+    64 00000063 6A00                    	push   dword 0 ;saves on stack the parameter of the function exit
+    65 00000065 FF15[00000000]          	call   [exit] ; function exit is called in order to end the execution of
+    66                                  ;the program

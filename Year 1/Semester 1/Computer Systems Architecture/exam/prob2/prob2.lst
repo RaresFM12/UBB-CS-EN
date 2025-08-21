@@ -1,0 +1,102 @@
+     1                                  bits 32
+     2                                  global start
+     3                                  
+     4                                  extern exit
+     5                                  import exit msvcrt.dll
+     6                                  
+     7                                  extern printf
+     8                                  import printf msvcrt.dll
+     9                                  
+    10                                  segment data use32 class=data
+    11 00000000 887766554433221144-         sir dq 1122334455667788h, 5332413244444444h
+    11 00000009 44444432413253     
+    12                                      len equ ($ - sir) / 8
+    13 00000010 <res 00000008>              sir2 resd len
+    14 00000018 00                          nr_cuv db 0
+    15                                      
+    16 00000019 00                          cnt db 0
+    17 0000001A 6165696F754145494F-         voc db "aeiouAEIOU", 0
+    17 00000023 5500               
+    18 00000025 256400                      format db "%d", 0
+    19                                  
+    20                                  segment code use32 class=code
+    21                                  vocale:
+    22 00000000 8B5C2404                    mov ebx, [esp + 4]
+    23 00000004 BF00000000                  mov edi, 0        ; cu edi merg prin voc  
+    24 00000009 B100                        mov cl, 0
+    25                                      
+    26                                      .Repeta1:
+    27 0000000B AD                              lodsd         ; luam fiecare dublu-cuvant
+    28 0000000C BF00000000                      mov edi, 0
+    29                                          
+    30                                          .Repeta2:
+    31 00000011 8A9F[1A000000]                      mov bl, [voc + edi]
+    32                                              
+    33 00000017 38DC                                cmp ah, bl
+    34 00000019 7508                                jne .nu_e_voc
+    35 0000001B FE05[19000000]                          inc byte [cnt]
+    36 00000021 EB08                                    jmp .gasit
+    37                                              
+    38                                              .nu_e_voc:
+    39                                              
+    40 00000023 47                                  inc edi
+    41 00000024 83FF0A                              cmp edi, 10    ; nu mai am vocale
+    42 00000027 7402                                je .nu_am_gasit
+    43                                              
+    44 00000029 EBE6                                jmp .Repeta2
+    45                                      
+    46                                          .gasit:
+    47                                          .nu_am_gasit:
+    48                                          
+    49 0000002B FEC1                            inc cl
+    50 0000002D 3A0D[18000000]                  cmp cl, byte [nr_cuv]
+    51 00000033 7402                            je .afara
+    52                                          
+    53 00000035 EBD4                            jmp .Repeta1
+    54                                          
+    55                                      .afara:
+    56                                          
+    57 00000037 B800000000                  mov eax, 0
+    58 0000003C A0[19000000]                mov al, [cnt]
+    59                                          
+    60 00000041 C3                          ret
+    61                                      
+    62                                  start:
+    63 00000042 BE[00000000]                mov esi, sir
+    64 00000047 BF[10000000]                mov edi, sir2
+    65 0000004C B900000000                  mov ecx, 0
+    66                                      Repeta:
+    67 00000051 66BB0000                        mov bx, 0
+    68                                          
+    69 00000055 AD                              lodsd          ; descarcam partea low de dublucuvant
+    70 00000056 AD                              lodsd          ; iau dublu-cuvantul high
+    71 00000057 6689C3                          mov bx, ax     ; iau cuvantul low in bx
+    72 0000005A C1C810                          ror eax, 16    ; mut cuvantul high in ax
+    73                                          
+    74 0000005D 6639D8                          cmp ax, bx     ; compar cuvant high cu cel low din dublu-cuvant
+    75 00000060 7E0A                            jng mai_mic
+    76                                              ; daca este mai mare in interpretarea cu semn ajunge aici
+    77 00000062 C1C810                              ror eax, 16   ; aducem valoarea din eax in pozitia initiala
+    78 00000065 AB                                  stosd
+    79 00000066 FE05[18000000]                      inc byte [nr_cuv]
+    80                                          
+    81                                          mai_mic:
+    82                                          
+    83 0000006C 41                              inc ecx        ; contorul de numere din sir
+    84 0000006D 83F902                          cmp ecx, len   ; daca contorul are lungimea sirului nu mai avem elemente in sir
+    85 00000070 7402                            je afara 
+    86                                          
+    87 00000072 EBDD                            jmp Repeta
+    88                                          
+    89                                      afara:
+    90                                      
+    91 00000074 68[10000000]                push dword sir2
+    92 00000079 E882FFFFFF                  call vocale
+    93                                      
+    94 0000007E 50                          push dword eax
+    95 0000007F 68[25000000]                push dword format
+    96 00000084 FF15[00000000]              call [printf]
+    97 0000008A 83C408                      add esp, 4 * 2
+    98                                      
+    99 0000008D 6A00                        push dword 0
+   100 0000008F FF15[00000000]              call [exit]

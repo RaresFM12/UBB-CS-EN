@@ -1,0 +1,11 @@
+debug/chef.o
+debug/formgraphic.o
+debug/main.o
+debug/mainwindow.o
+debug/observer.o
+debug/recipe.o
+debug/repository.o
+debug/service.o
+debug/subject.o
+debug/moc_formgraphic.o
+debug/moc_mainwindow.o

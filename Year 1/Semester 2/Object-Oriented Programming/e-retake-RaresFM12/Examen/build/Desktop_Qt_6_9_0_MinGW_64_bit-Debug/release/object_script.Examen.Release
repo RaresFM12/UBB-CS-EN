@@ -1,0 +1,11 @@
+release/chef.o
+release/formgraphic.o
+release/main.o
+release/mainwindow.o
+release/observer.o
+release/recipe.o
+release/repository.o
+release/service.o
+release/subject.o
+release/moc_formgraphic.o
+release/moc_mainwindow.o

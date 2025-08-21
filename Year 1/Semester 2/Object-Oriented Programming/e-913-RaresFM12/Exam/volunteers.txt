@@ -1,0 +1,11 @@
+Andrei,andrei.ionut@yahoo.com,fotbal|tennis,Departamentul 1
+Ioana,ioana.crina@gmail.com,handball,Departamentul 4
+George,george.andrei@gmail.com,kickbox|basket,Departamentul 3
+Doru,doru.bolo@yahoo.com,cars|volley|fotbal,Departamentul 3
+Crina,crina.iulia@yahoo.com,volley|tennis,Departamentul 4
+Adela,adela.mara@yahoo.com,reading|writing,Departamentul 5
+ANa,asdfadsf,voley|fotbal,None
+Ionel,dsfsdf,erf|tyu,Departamentul 5
+Bianca,bibi@gmail.com,math|sports,Departamentul 5
+Gaboru,gabii@yahoo.com,reading|writing,Departamentul 2
+Gabi,fadsdsf,fotbal,None

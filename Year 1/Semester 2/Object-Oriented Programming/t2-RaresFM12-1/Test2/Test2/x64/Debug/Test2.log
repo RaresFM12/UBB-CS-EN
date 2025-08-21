@@ -1,0 +1,3 @@
+﻿  domain.cpp
+E:\Rares\facultate\anul 1\sem2\oop\assignements\t2-RaresFM12-1\Test2\Test2\domain.cpp(28): warning C4715: 'Car::computePrice': not all control paths return a value
+  Test2.vcxproj -> E:\Rares\facultate\anul 1\sem2\oop\assignements\t2-RaresFM12-1\Test2\x64\Debug\Test2.exe

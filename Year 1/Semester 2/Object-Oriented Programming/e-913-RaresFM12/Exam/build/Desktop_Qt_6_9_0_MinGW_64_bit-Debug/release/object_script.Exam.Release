@@ -1,0 +1,10 @@
+release/department.o
+release/main.o
+release/mainwindow.o
+release/mymodel.o
+release/observer.o
+release/repository.o
+release/service.o
+release/subject.o
+release/volunteer.o
+release/moc_mainwindow.o

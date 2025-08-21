@@ -1,0 +1,5 @@
+Departamentul 1,sport math arts
+Departamentul 2,cooking voley handbal
+Departamentul 3,calculator basket reading
+Departamentul 4,writing sport arts
+Departamentul 5,cooking philosophy

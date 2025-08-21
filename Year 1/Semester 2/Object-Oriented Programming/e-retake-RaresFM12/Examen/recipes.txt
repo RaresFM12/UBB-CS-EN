@@ -1,0 +1,10 @@
+Recipe 12,German,23,mere|ciocolata|ceapa
+Recipe 3,German,40,ceapa|varza|morcovi
+Recipe 1,German,45,salata|varza|morcovi
+Recipe 114,German,60,miere|zahar|ulei
+Recipe 6,German,105,usturoi|mere|pere
+Recipe 5,Italian,60,usturoi|salata|morcovi
+Recipe 9,Italian,75,mere|pere|nuci
+Recipe 2,Italian,105,varza|carne|ceapa
+Recipe 8,Mexican,80,carne|ceapa|mere
+Recipe 4,Mexican,120,usturoi|carne|ceapa

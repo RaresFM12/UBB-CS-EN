@@ -1,0 +1,10 @@
+debug/department.o
+debug/main.o
+debug/mainwindow.o
+debug/mymodel.o
+debug/observer.o
+debug/repository.o
+debug/service.o
+debug/subject.o
+debug/volunteer.o
+debug/moc_mainwindow.o

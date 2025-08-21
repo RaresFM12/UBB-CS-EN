@@ -1,0 +1,26 @@
+﻿  main.cpp
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(73,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(79,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(187,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(196,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(223,28): warning C4018: '<': signed/unsigned mismatch
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(249,51): warning C4244: 'argument': conversion from 'double' to 'const _Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(262,21): warning C4018: '<=': signed/unsigned mismatch
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(270,45): warning C4244: '=': conversion from '__int64' to '_Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(292,47): warning C4244: 'argument': conversion from 'double' to 'const _Ty', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(310,19): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(537,11): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\Assignement3_Graphs\main.cpp(626,1): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Assignement3_Graphs.vcxproj -> E:\Rares\facultate\anul 1\sem2\grafuri\A3\Assignement3_Graphs\x64\Debug\Assignement3_Graphs.exe

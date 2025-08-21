@@ -1,0 +1,17 @@
+﻿  main.cpp
+E:\Rares\facultate\anul 1\sem2\grafuri\A5\Assignement5_Graphs\Assignement5_Graphs\undirected_graph.h(117,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A5\Assignement5_Graphs\Assignement5_Graphs\undirected_graph.h(123,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A5\Assignement5_Graphs\Assignement5_Graphs\undirected_graph.h(250,28): warning C4018: '<': signed/unsigned mismatch
+E:\Rares\facultate\anul 1\sem2\grafuri\A5\Assignement5_Graphs\Assignement5_Graphs\ui.h(185,11): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+E:\Visual Studio IDE\VC\Tools\MSVC\14.35.32215\include\utility(200,61): warning C4244: 'initializing': conversion from '_Ty' to '_Ty2', possible loss of data
+          with
+          [
+              _Ty=__int64
+          ]
+          and
+          [
+              _Ty2=int
+          ]
+E:\Rares\facultate\anul 1\sem2\grafuri\A5\Assignement5_Graphs\Assignement5_Graphs\undirected_graph.h(296,1): message : see reference to function template instantiation 'std::pair<std::pair<int,int>,int>::pair<std::pair<int,int>,__int64,0>(std::pair<std::pair<int,int>,__int64> &&) noexcept' being compiled
+E:\Rares\facultate\anul 1\sem2\grafuri\A5\Assignement5_Graphs\Assignement5_Graphs\undirected_graph.h(296,19): message : see reference to function template instantiation 'std::pair<std::pair<int,int>,int>::pair<std::pair<int,int>,__int64,0>(std::pair<std::pair<int,int>,__int64> &&) noexcept' being compiled
+  Assignement5_Graphs.vcxproj -> E:\Rares\facultate\anul 1\sem2\grafuri\A5\Assignement5_Graphs\x64\Debug\Assignement5_Graphs.exe

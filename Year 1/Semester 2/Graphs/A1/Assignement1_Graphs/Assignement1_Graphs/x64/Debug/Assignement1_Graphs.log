@@ -1,0 +1,8 @@
+﻿  main.cpp
+E:\Rares\facultate\anul 1\sem2\grafuri\A1\Assignement1_Graphs\Assignement1_Graphs\main.cpp(71,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A1\Assignement1_Graphs\Assignement1_Graphs\main.cpp(77,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A1\Assignement1_Graphs\Assignement1_Graphs\main.cpp(185,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A1\Assignement1_Graphs\Assignement1_Graphs\main.cpp(194,1): warning C4267: 'return': conversion from 'size_t' to 'unsigned long', possible loss of data
+E:\Rares\facultate\anul 1\sem2\grafuri\A1\Assignement1_Graphs\Assignement1_Graphs\main.cpp(221,28): warning C4018: '<': signed/unsigned mismatch
+E:\Rares\facultate\anul 1\sem2\grafuri\A1\Assignement1_Graphs\Assignement1_Graphs\main.cpp(440,11): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
+  Assignement1_Graphs.vcxproj -> E:\Rares\facultate\anul 1\sem2\grafuri\A1\Assignement1_Graphs\x64\Debug\Assignement1_Graphs.exe
